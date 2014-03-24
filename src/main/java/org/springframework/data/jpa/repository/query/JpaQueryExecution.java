@@ -23,7 +23,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +42,11 @@ import org.springframework.util.Assert;
  */
 public abstract class JpaQueryExecution {
 
-	private static final ConversionService conversionService = new DefaultConversionService();
+	private static final DefaultConversionService conversionService = new DefaultConversionService();
+
+	static {
+		conversionService.addConverter(JpaResultConverters.BlobToByteArrayConverter.INSTANCE);
+	}
 
 	/**
 	 * Executes the given {@link AbstractStringBasedJpaQuery} with the given {@link ParameterBinder}.
